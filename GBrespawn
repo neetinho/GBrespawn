@@ -1,0 +1,263 @@
+Index: java/config/NPC.properties
+===================================================================
+--- java/config/NPC.properties (revision 2832)
++++ java/config/NPC.properties (working copy)
+@@ -116,4 +116,29 @@
+# Configure the interval at which Boss minions will re-spawn.
+# This time is in milliseconds, 1 minute is 60000 milliseconds.
+# Retail: 300000
+-RaidMinionRespawnTime = 300000
+\ No newline at end of file
++RaidMinionRespawnTime = 300000
++
++#============================================================#
++# Grand Boss #
++#============================================================#
++# Max Respawn must be higher when min respawn.Time in hours
+
++#Antharas
++AntharasMinRespawn = 192
++AntharasMaxRespawn = 337
++#Baium
++BaiumMinRespawn = 121
++BaiumMaxRespawn = 129
++#Core
++CoreMinRespawn = 27
++CoreMaxRespawn = 74
++#Orfen
++OrfenMinRespawn = 28
++OrfenMaxRespawn = 69
++#Queen Ant
++QAMinRespawn = 19
++QAMaxRespawn = 54
++#Valakas
++ValakasMinRespawn = 192
++ValakasMaxRespawn = 337
++#Zaken
++ZakenMinRespawn = 19
++ZakenMaxRespawn = 54
+\ No newline at end of file
+Index: java/net/sf/l2j/Config.java
+===================================================================
+--- java/net/sf/l2j/Config.java 
++++ java/net/sf/l2j/Config.java (working copy)
+@@ -588,6 +588,20 @@
+public static double RAID_MINION_RESPAWN_TIMER;
+public static float RAID_MIN_RESPAWN_MULTIPLIER;
+public static float RAID_MAX_RESPAWN_MULTIPLIER;
++ public static int ANTHARAS_MIN_RESPAWN;
++ public static int ANTHARAS_MAX_RESPAWN;
++ public static int BAIUM_MIN_RESPAWN;
++ public static int BAIUM_MAX_RESPAWN;
++ public static int CORE_MIN_RESPAWN;
++ public static int CORE_MAX_RESPAWN;
++ public static int ORFEN_MIN_RESPAWN;
++ public static int ORFEN_MAX_RESPAWN;
++ public static int QA_MIN_RESPAWN;
++ public static int QA_MAX_RESPAWN;
++ public static int VALAKAS_MIN_RESPAWN;
++ public static int VALAKAS_MAX_RESPAWN;
++ public static int ZAKEN_MIN_RESPAWN;
++ public static int ZAKEN_MAX_RESPAWN;
+public static int INVENTORY_MAXIMUM_PET;
+
+/** ************************************************** **/
+@@ -1675,6 +1689,20 @@
+RAID_MIN_RESPAWN_MULTIPLIER = Float.parseFloat(NPC.getProperty("RaidMinRespawnMultiplier", "1.0"));
+RAID_MAX_RESPAWN_MULTIPLIER = Float.parseFloat(NPC.getProperty("RaidMaxRespawnMultiplier", "1.0"));
+RAID_MINION_RESPAWN_TIMER = Integer.parseInt(NPC.getProperty("RaidMinionRespawnTime", "300000"));
++ ANTHARAS_MIN_RESPAWN = Integer.parseInt(NPC.getProperty("AntharasMinRespawn", "192"));
++ ANTHARAS_MAX_RESPAWN = Integer.parseInt(NPC.getProperty("AntharasMaxRespawn", "337"));
++ BAIUM_MIN_RESPAWN = Integer.parseInt(NPC.getProperty("BaiumMinRespawn", "121"));
++ BAIUM_MAX_RESPAWN = Integer.parseInt(NPC.getProperty("BaiumMaxRespawn", "129"));
++ CORE_MIN_RESPAWN = Integer.parseInt(NPC.getProperty("CoreMinRespawn", "27"));
++ CORE_MAX_RESPAWN = Integer.parseInt(NPC.getProperty("CoreMaxRespawn", "74"));
++ ORFEN_MIN_RESPAWN = Integer.parseInt(NPC.getProperty("OrfenMinRespawn", "28"));
++ ORFEN_MAX_RESPAWN = Integer.parseInt(NPC.getProperty("OrfenMaxRespawn", "69"));
++ QA_MIN_RESPAWN = Integer.parseInt(NPC.getProperty("QAMinRespawn", "19"));
++ QA_MAX_RESPAWN = Integer.parseInt(NPC.getProperty("QAMaxRespawn", "54"));
++ VALAKAS_MIN_RESPAWN = Integer.parseInt(NPC.getProperty("ValakasMinRespawn", "192"));
++ VALAKAS_MAX_RESPAWN = Integer.parseInt(NPC.getProperty("ValakasMaxRespawn", "337"));
++ ZAKEN_MIN_RESPAWN = Integer.parseInt(NPC.getProperty("ZakenMinRespawn", "19"));
++ ZAKEN_MAX_RESPAWN = Integer.parseInt(NPC.getProperty("ZakenMaxRespawn", "54"));
+INVENTORY_MAXIMUM_PET = Integer.parseInt(NPC.getProperty("MaximumSlotsForPet", "12"));
+
+}
+@@ -2205,7 +2233,21 @@
+else if (pName.equalsIgnoreCase("RaidMpRegenMultiplier")) RAID_MP_REGEN_MULTIPLIER = Double.parseDouble(pValue);
+else if (pName.equalsIgnoreCase("RaidPDefenceMultiplier")) RAID_PDEFENCE_MULTIPLIER = Double.parseDouble(pValue) /100;
+else if (pName.equalsIgnoreCase("RaidMDefenceMultiplier")) RAID_MDEFENCE_MULTIPLIER = Double.parseDouble(pValue) /100;
+- else if (pName.equalsIgnoreCase("RaidMinionRespawnTime")) RAID_MINION_RESPAWN_TIMER =Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("RaidMinionRespawnTime")) RAID_MINION_RESPAWN_TIMER = Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("AntharasMinRespawn")) ANTHARAS_MIN_RESPAWN = Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("AntharasMaxRespawn")) ANTHARAS_MAX_RESPAWN = Integer.parseInt(pValue) < ANTHARAS_MIN_RESPAWN ? ANTHARAS_MIN_RESPAWN : Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("BaiumMinRespawn")) BAIUM_MIN_RESPAWN = Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("BaiumMaxRespawn")) BAIUM_MAX_RESPAWN = Integer.parseInt(pValue) < BAIUM_MIN_RESPAWN ? BAIUM_MIN_RESPAWN : Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("CoreMinRespawn")) CORE_MIN_RESPAWN = Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("CoreMaxRespawn")) CORE_MAX_RESPAWN = Integer.parseInt(pValue) < CORE_MIN_RESPAWN ? CORE_MIN_RESPAWN : Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("OrfenMinRespawn")) ORFEN_MIN_RESPAWN = Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("OrfenMaxRespawn")) ORFEN_MAX_RESPAWN = Integer.parseInt(pValue) < ORFEN_MIN_RESPAWN ? ORFEN_MIN_RESPAWN : Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("QAMinRespawn")) QA_MIN_RESPAWN = Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("QAMaxRespawn")) QA_MAX_RESPAWN = Integer.parseInt(pValue) < QA_MIN_RESPAWN ? QA_MIN_RESPAWN : Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("ValakasMinRespawn")) VALAKAS_MIN_RESPAWN = Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("ValakasMaxRespawn")) VALAKAS_MAX_RESPAWN = Integer.parseInt(pValue) < VALAKAS_MIN_RESPAWN ? VALAKAS_MIN_RESPAWN : Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("ZakenMinRespawn")) ZAKEN_MIN_RESPAWN = Integer.parseInt(pValue);
++ else if (pName.equalsIgnoreCase("ZakenMaxRespawn")) ZAKEN_MAX_RESPAWN = Integer.parseInt(pValue) < ZAKEN_MIN_RESPAWN ? ZAKEN_MIN_RESPAWN : Integer.parseInt(pValue);
+
+else if (pName.equalsIgnoreCase("StartingAdena")) STARTING_ADENA = Integer.parseInt(pValue);
+else if (pName.equalsIgnoreCase("UnstuckInterval")) UNSTUCK_INTERVAL = Integer.parseInt(pValue);
+ 
+
+ 
+
+ 
+
+Datapack Patch:
+
+Index: data/scripts/ai/individual/Antharas.java
+===================================================================
+--- data/scripts/ai/individual/Antharas.java 
++++ data/scripts/ai/individual/Antharas.java (working copy)
+@@ -14,6 +14,7 @@
+*/
+package ai.individual;
+
++import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
+import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
+import net.sf.l2j.gameserver.model.L2CharPosition;
+@@ -219,7 +220,7 @@
+npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+this.startQuestTimer("spawn_cubes", 10000, npc, null);
+GrandBossManager.getInstance().setBossStatus(ANTHARAS,DEAD);
+- long respawnTime = ((192 + Rnd.get(145) ) * 3600000);
++ long respawnTime = ((Config.ANTHARAS_MIN_RESPAWN + Rnd.get(Config.ANTHARAS_MAX_RESPAWN - Config.ANTHARAS_MIN_RESPAWN) ) * 3600000);
+this.startQuestTimer("antharas_unlock", respawnTime, null, null);
+// also save the respawn time so that the info is maintained past reboots
+StatsSet info = GrandBossManager.getInstance().getStatsSet(ANTHARAS);
+Index: data/scripts/ai/individual/Baium.java
+===================================================================
+--- data/scripts/ai/individual/Baium.java
++++ data/scripts/ai/individual/Baium.java (working copy)
+@@ -22,6 +22,7 @@
+import javolution.util.FastList;
+import ai.group_template.L2AttackableAIScript;
+
++import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.GeoData;
+import net.sf.l2j.gameserver.ThreadPoolManager;
+import net.sf.l2j.gameserver.datatables.SkillTable;
+@@ -356,7 +357,7 @@
+// spawn the "Teleportation Cubic" for 15 minutes (to allow players to exit the lair)
+addSpawn(29055,115203,16620,10078,0,false,900000); ////should we teleport everyone out if the cubic despawns??
+// "lock" baium for 5 days and 1 to 8 hours [i.e. 432,000,000 + 1*3,600,000 + random-less-than(8*3,600,000) millisecs]
+- long respawnTime = ((121 + Rnd.get(8)) * 3600000);
++ long respawnTime = ((Config.BAIUM_MIN_RESPAWN + Rnd.get(Config.BAIUM_MAX_RESPAWN - Config.BAIUM_MIN_RESPAWN)) * 3600000);
+GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM,DEAD);
+startQuestTimer("baium_unlock", respawnTime, null, null);
+// also save the respawn time so that the info is maintained past reboots
+Index: data/scripts/ai/individual/Core.java
+===================================================================
+--- data/scripts/ai/individual/Core.java 
++++ data/scripts/ai/individual/Core.java (working copy)
+@@ -17,6 +17,7 @@
+import java.util.List;
+
+import javolution.util.FastList;
++import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
+import net.sf.l2j.gameserver.model.L2Attackable;
+import net.sf.l2j.gameserver.model.actor.instance.L2GrandBossInstance;
+@@ -191,7 +192,7 @@
+addSpawn(31842,18948,110166,-6397,0,false,900000);
+GrandBossManager.getInstance().setBossStatus(CORE,DEAD);
+//time is 60hour +/- 23hour
+- long respawnTime = (27 + Rnd.get(47)) * 3600000;
++ long respawnTime = (Config.CORE_MIN_RESPAWN + Rnd.get(Config.CORE_MAX_RESPAWN - Config.CORE_MIN_RESPAWN)) * 3600000;
+startQuestTimer("core_unlock", respawnTime, null, null);
+// also save the respawn time so that the info is maintained past reboots
+StatsSet info = GrandBossManager.getInstance().getStatsSet(CORE);
+Index: data/scripts/ai/individual/Orfen.java
+===================================================================
+--- data/scripts/ai/individual/Orfen.java 
++++ data/scripts/ai/individual/Orfen.java (working copy)
+@@ -17,6 +17,7 @@
+import java.util.List;
+
+import javolution.util.FastList;
++import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
+import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
+@@ -311,7 +312,7 @@
+npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+GrandBossManager.getInstance().setBossStatus(ORFEN,DEAD);
+//time is 48hour +/- 20hour
+- long respawnTime = (28 + Rnd.get(41) * 3600000);
++ long respawnTime = (Config.ORFEN_MIN_RESPAWN + Rnd.get(Config.ORFEN_MAX_RESPAWN - Config.ORFEN_MIN_RESPAWN) * 3600000);
+this.startQuestTimer("orfen_unlock", respawnTime, null, null);
+// also save the respawn time so that the info is maintained past reboots
+StatsSet info = GrandBossManager.getInstance().getStatsSet(ORFEN);
+Index: data/scripts/ai/individual/QueenAnt.java
+===================================================================
+--- data/scripts/ai/individual/QueenAnt.java 
++++ data/scripts/ai/individual/QueenAnt.java (working copy)
+@@ -17,6 +17,7 @@
+import java.util.List;
+
+import javolution.util.FastList;
++import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
+import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
+@@ -234,7 +235,7 @@
+npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+GrandBossManager.getInstance().setBossStatus(QUEEN,DEAD);
+//time is 36hour +/- 17hour
+- long respawnTime = ((19 + Rnd.get(35) ) * 3600000);
++ long respawnTime = ((Config.QA_MIN_RESPAWN + Rnd.get(Config.QA_MAX_RESPAWN - Config.QA_MIN_RESPAWN) ) * 3600000);
+startQuestTimer("queen_unlock", respawnTime, null, null);
+cancelQuestTimer("action", npc, null);
+// also save the respawn time so that the info is maintained past reboots
+Index: data/scripts/ai/individual/Valakas.java
+===================================================================
+--- data/scripts/ai/individual/Valakas.java
++++ data/scripts/ai/individual/Valakas.java (working copy)
+@@ -22,6 +22,7 @@
+import javolution.util.FastList;
+import ai.group_template.L2AttackableAIScript;
+
++import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.ThreadPoolManager;
+import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.instancemanager.GrandBossManager;
+@@ -965,7 +966,7 @@
+npc.broadcastPacket(new PlaySound(1, "B03_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+// uncoment me once animations available 
+//GrandBossManager.getInstance().setBossStatus(VALAKAS,DEAD);
+- long respawnTime = ((192 + Rnd.get(145) ) * 3600000);
++ long respawnTime = ((Config.VALAKAS_MIN_RESPAWN + Rnd.get(Config.VALAKAS_MAX_RESPAWN - Config.VALAKAS_MIN_RESPAWN) ) * 3600000);
+this.startQuestTimer("valakas_unlock", respawnTime, null, null);
+// also save the respawn time so that the info is maintained past reboots
+StatsSet info = GrandBossManager.getInstance().getStatsSet(VALAKAS);
+Index: data/scripts/ai/individual/Zaken.java
+===================================================================
+--- data/scripts/ai/individual/Zaken.java 
++++ data/scripts/ai/individual/Zaken.java (working copy)
+@@ -17,6 +17,7 @@
+import java.util.logging.Logger;
+
+import ai.group_template.L2AttackableAIScript;
++import net.sf.l2j.Config;
+import net.sf.l2j.gameserver.GameTimeController;
+import net.sf.l2j.gameserver.ThreadPoolManager;
+import net.sf.l2j.gameserver.ai.CtrlIntention;
+@@ -752,7 +753,7 @@
+npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+GrandBossManager.getInstance().setBossStatus(ZAKEN,DEAD);
+//time is 36hour +/- 17hour
+- long respawnTime = ((19 + Rnd.get(35) ) * 3600000);
++ long respawnTime = ((Config.ZAKEN_MIN_RESPAWN + Rnd.get(Config.ZAKEN_MAX_RESPAWN - Config.ZAKEN_MIN_RESPAWN) ) * 3600000);
+startQuestTimer("zaken_unlock", respawnTime, null, null);
+cancelQuestTimer("1001", npc, null);
+cancelQuestTimer("1003", npc, null);
